@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
+	<package name="dx-default" extends="struts-default">
+		
+		<interceptors>
+			<interceptor name="loginInterceptor" class="DXInterceptor"></interceptor>
+			<interceptor-stack name="loginDefaultStack">
+				<interceptor-ref name="loginInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref> 
+			</interceptor-stack>
+			
+		</interceptors>
+		<default-interceptor-ref name="loginDefaultStack"></default-interceptor-ref>
+        <global-results>   
+       		<result name="dateHope" type="redirect">http://info.3g.qq.com/g/s?aid=template&amp;tid=news_zqnsladr</result>
+        </global-results>
+ 	 
+	</package>
+	<package name="home" extends="dx-default" namespace="/">
+	</package>	
+ 	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" /> 
+</struts>    

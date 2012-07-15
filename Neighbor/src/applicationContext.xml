@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema
+	/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<!--
+		<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation" value="classpath:hibernate.cfg.xml">
+		</property> </bean>
+	-->
+
+	<!--
+		<context:annotation-config /> <context:component-scan
+		base-package="com.bluesky" /> <tx:annotation-driven
+		transaction-manager="transactionManager"/> <bean
+		id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" /> </bean>
+	-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver">
+		</property>
+		<!--  
+		<property name="url"
+			value="jdbc:mysql://121.12.118.241:3306/dx_ts?useUnicode=true&amp;characterEncoding=utf8&amp;characterResultSets=utf8"></property>
+			-->
+		<property name="url"
+			value="jdbc:mysql://121.12.118.241:3306/dx_ts?useUnicode=true&amp;characterEncoding=utf8&amp;characterResultSets=utf8"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="mysql@123"></property>	
+		
+		<!-- MaxActive连接池的最大数据库连接数。设为0表示无限制 -->
+		<property name="maxActive" value="100"></property>
+		<!-- maxWait最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。 -->
+		<property name="maxWait" value="60000"></property>
+		<!-- maxIdle最大空闲数，数据库连接的最大空闲时间。超过空闲时间，数据库连接将被标记为不可用，然后被释放。设为0表示无限制。 -->
+		<property name="maxIdle" value="10"></property>
+		<property name="validationQuery" value="SELECT 1"></property>
+		<property name="testOnBorrow" value="true"></property>
+		<property name="testOnReturn" value="true"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="300000"></property>
+	
+		<!-- Supported UTF-8 character set -->
+	</bean>
+	<bean id="dataSourceForSlave" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://121.12.118.241:3306/dx_ts?useUnicode=true&amp;characterEncoding=utf8&amp;characterResultSets=utf8"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="mysql@123"></property>	
+		<property name="maxActive" value="100"></property>
+		<property name="maxWait" value="60000"></property>
+		<property name="maxIdle" value="10"></property>
+		<property name="validationQuery" value="SELECT 1"></property>
+		<property name="testOnBorrow" value="true"></property>
+		<property name="testOnReturn" value="true"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="300000"></property>
+				
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mappingResources">
+			<list>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					com.dx.common.MySQLExtendDialect   
+           </prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.dynamic-update">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+		<property name="allowCreate">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<bean id="GenericDao" class="com.dx.common.dao.GenericDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	
+
+
+    
+</beans>
