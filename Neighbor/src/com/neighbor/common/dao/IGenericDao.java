@@ -8,12 +8,13 @@ import org.springframework.dao.DataAccessException;
 
 /**
  * 
- * @author benlin
- * 
- * @param <T>
- * @param <ID>
+* @ClassName: IGenericDao
+* @Description: TODO
+* @author Melon
+* @date 2012-8-25 下午6:12:34
+* @param <T>
+* @param <ID>
  */
-
 public interface IGenericDao<T, ID extends Serializable> {
 	
 	  public T get(ID id)throws DataAccessException;   		

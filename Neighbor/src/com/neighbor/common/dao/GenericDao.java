@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
@@ -18,17 +17,15 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.neighbor.common.util.Page;
-
-
-
 /**
  * 
- * @author benlin
- * @param <T>
- * @param <ID>
+* @ClassName: GenericDao
+* @Description: TODO
+* @author Melon
+* @date 2012-8-25 下午6:12:11
+* @param <T>
+* @param <ID>
  */
-
-
 @SuppressWarnings("unchecked")
 public class GenericDao<T, ID extends Serializable> extends HibernateDaoSupport
 		implements IGenericDao<T, ID> {
@@ -60,27 +57,15 @@ public class GenericDao<T, ID extends Serializable> extends HibernateDaoSupport
 	}
 
 
-	 /*
-	  * 閫氶敓鏂ゆ嫹涓�敓鏂ゆ嫹lockMode閿熸枻鎷峰垹閿熸枻鎷蜂竴閿熸枻鎷峰疄閿熸枻鎷�閿熸枻鎷烽敓鏂ゆ嫹瀹為敓鏂ゆ嫹閿熸彮浼欐嫹閿熸枻鎷烽敓鏂ゆ嫹閿燂拷
-	  * @see com.dx.cc.common.dao.IGenericDao#delete(java.lang.Object, org.hibernate.LockMode)
-	  */
 	public void delete(T t, LockMode lockMode) throws DataAccessException {
 		getHibernateTemplate().delete(t, lockMode);
 	}
     
-	/*
-	 * 閫氶敓鏂ゆ嫹ID 鍒犻敓鏂ゆ嫹瀹為敓鏂ゆ嫹
-	 */
 	
 	public boolean delete(ID id) {
 		return this.delete(this.get(id));
 	}
 	
-	/*
-	 * 鍒犻敓鏂ゆ嫹涓�敓鏂ゆ嫹瀹為敓鏂ゆ嫹
-	 * (non-Javadoc)
-	 * @see com.dx.cc.common.dao.IGenericDao#delete(java.lang.Object)
-	 */
 	public boolean delete(T t){
 		boolean result=false;
 		try
@@ -213,7 +198,7 @@ public class GenericDao<T, ID extends Serializable> extends HibernateDaoSupport
 		}
 		 Session session=getSession();
 		 
-		 Query query=session.createQuery(hql);//閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷疯
+		 Query query=session.createQuery(hql);
 		 if (values!=null) {
 			 setQueryParamter(query, values);
 		  }
@@ -232,22 +217,19 @@ public class GenericDao<T, ID extends Serializable> extends HibernateDaoSupport
 				}
 			
 		} catch (HibernateException e) {
-			if(logger.isEnabledFor(Priority.ERROR)) logger.error("璋冪敤GenericDao.findPageByQuery鍑虹幇閿欒,閿欒浠ｇ爜:"+e.getMessage());
 		}
 		finally{
 			releaseSession(session);
 		}
 		 return null; 
-		 //return new Page(list,Page.DEFAULT_PAGE_SIZE,totalCount);
 	 }
 	 
 
 	 public Page  findPageByJoinQuery(int pageCurrentNo,String hql,int pageSize,List values,String order){
-		   //count 閿熸枻鎷疯
 		 String countQueryString= hql;
 		 List  conutList;
 		 if (values!=null&& values.size()>0) {
-			conutList=getHibernateTemplate().find(countQueryString, values.toArray());//涓�敓鏂ゆ嫹閿熸枻鎷穞oArray
+			conutList=getHibernateTemplate().find(countQueryString, values.toArray());
 		}else {
 			conutList=getHibernateTemplate().find(countQueryString);
 		}
@@ -274,7 +256,7 @@ public class GenericDao<T, ID extends Serializable> extends HibernateDaoSupport
 		}
 		 Session session=getSession();
 		 
-		 Query query=session.createQuery(hql);//閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷疯
+		 Query query=session.createQuery(hql);
 		 if (values!=null) {
 			 setQueryParamter(query, values);
 		  }
@@ -371,12 +353,6 @@ public class GenericDao<T, ID extends Serializable> extends HibernateDaoSupport
 		}
     }
 	
-	/**
-	 * 閿熸枻鎷疯閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷锋墽閿熸枻鎷穝ql閿熸枻鎷烽敓锟�
-	 * @param sql
-	 * @param object 閿熸枻鎷穙bject閿熸枻鎷疯閿熶茎鏂ゆ嫹閿熺担ist閿熸枻鎷�
-	 * @return
-	 */
 	 public List<T> findBySql(String sql,T object){
 		 
 		 Session session=null;
@@ -511,9 +487,9 @@ public class GenericDao<T, ID extends Serializable> extends HibernateDaoSupport
 			tx = session.beginTransaction();
 			SQLQuery sqlQuery = session.createSQLQuery(sql);
 			if (top != 0) {
-				sqlQuery.setFirstResult(0); // 璁剧疆棣栬璁板綍
-				sqlQuery.setMaxResults(top);// 璁剧疆鏌ヨ鍒扮殑鏈�ぇ璁板綍鏁�
-				//sqlQuery.setFetchSize(top); // 璁剧疆瑕佹煡璇㈢殑璁板綍鏁�
+				sqlQuery.setFirstResult(0); 
+				sqlQuery.setMaxResults(top);
+				//sqlQuery.setFetchSize(top);
 			}
 			if (object != null)
 				sqlQuery.addEntity(object.getClass());
@@ -528,7 +504,6 @@ public class GenericDao<T, ID extends Serializable> extends HibernateDaoSupport
 					session = null;
 				}
 			} catch (Exception en) {
-				if(logger.isEnabledFor(Priority.ERROR)) logger.error("璋冪敤GenericDao.findBySql鍑虹幇閿欒,閿欒浠ｇ爜:"+en.getMessage());
 			}
 			return null;
 		} finally {

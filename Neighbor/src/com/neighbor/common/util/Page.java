@@ -6,11 +6,6 @@ import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
 
-import com.caucho.server.http.HttpServletRequestImpl;
-
-
-
-
 public class Page<T> {
 
 	public static int DEFAULT_PAGE_SIZE = 10;
@@ -75,16 +70,16 @@ public class Page<T> {
 		return total;
 	}
 
-	/*鍒濆鍖栧垎椤�
+	/*初始化分页 
 	 * */
 	public Page() {
 		this(new ArrayList<T>(),0,0);
 	}
 	
-	/*鍒濆鍖栧垎椤�
-	 * @data 鏁版嵁
-	 * @pageSize 涓�〉澶氬皯琛屾暟
-	 * @total	鎬昏鏁�
+	/*初始化分页
+	 * @data 数据
+	 * @pageSize 一页多少行数
+	 * @total	总行数 
 	 * */
 	public Page(List<T> data,Integer pageSize,Integer total)
 	{
@@ -104,11 +99,11 @@ public class Page<T> {
 		}
 	}
 	
-	/*鍒濆鍖栧垎椤�
-	 * @data 鏁版嵁
-	 * @curPageNo 褰撳墠椤电爜
-	 * @pageSize 涓�〉澶氬皯琛屾暟
-	 * @total	鎬昏鏁�
+	/*初始化分页
+	 * @data 数据
+	 * @curPageNo 当前页码
+	 * @pageSize 一页多少行数
+	 * @total	总行数 
 	 * */
 	public Page(List<T> data,Integer curPageno,Integer pageSize,Integer total)
 	{
@@ -128,7 +123,7 @@ public class Page<T> {
 			}
 		}
 	}
-	/*鑾峰彇鍒嗛〉椤佃剼
+	/*获取分页页脚
 	 * */
 	public String getFooter() {
 		String url=ServletActionContext.getRequest().getContextPath();
@@ -171,15 +166,15 @@ public class Page<T> {
 			//first page
 			if(this.curPageNo==1)
 			{
-				this.footer="棣栭〉&nbsp;&nbsp;<a href='"+url+"pageno="+(this.curPageNo+1)+"'>涓嬩竴椤�/a>&nbsp;&nbsp;<a href='"+url+"pageno="+this.pageCount+"'>鏈〉</a></div>";
+				this.footer="首页&nbsp;&nbsp;<a href='"+url+"pageno="+(this.curPageNo+1)+"'>下一页</a>&nbsp;&nbsp;<a href='"+url+"pageno="+this.pageCount+"'>末页</a></div>";
 			}
 			else if(this.curPageNo==this.pageCount)
 			{
-				this.footer="<a href='"+url+"pageno=1'>棣栭〉</a>&nbsp;&nbsp;<a href='"+url+"pageno="+(this.curPageNo-1)+"'>涓婁竴椤�/a>&nbsp;&nbsp;鏈〉";
+				this.footer="<a href='"+url+"pageno=1'>首页</a>&nbsp;&nbsp;<a href='"+url+"pageno="+(this.curPageNo-1)+"'>上一页</a>&nbsp;&nbsp;末页";
 			}
 			else
 			{		
-				this.footer="<a href='"+url+"pageno=1'>棣栭〉</a>&nbsp;&nbsp;<a href='"+url+"pageno="+(this.curPageNo-1)+"'>涓婁竴椤�/a>&nbsp;&nbsp;<a href='"+url+"pageno="+(this.curPageNo+1)+"'>涓嬩竴椤�/a>&nbsp;&nbsp;<a href='"+url+"pageno="+this.pageCount+"'>鏈〉</a>";
+				this.footer="<a href='"+url+"pageno=1'>首页</a>&nbsp;&nbsp;<a href='"+url+"pageno="+(this.curPageNo-1)+"'>上一页</a>&nbsp;&nbsp;<a href='"+url+"pageno="+(this.curPageNo+1)+"'>下一页</a>&nbsp;&nbsp;<a href='"+url+"pageno="+this.pageCount+"'>末页</a>";
 			}			
 		}
 			
